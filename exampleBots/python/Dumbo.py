@@ -10,7 +10,7 @@ def AI_loop():
     frontWall = ai.wallFeeler(1000, heading)
     leftWall = ai.wallFeeler(1000, heading - 90)
     rightWall = ai.wallFeeler(1000, heading + 90)
-    backWall = ai.wallFeeler(1000, heading -180)
+    backWall = ai.wallFeeler(1000, heading - 180)
     trackWall = ai.wallFeeler(1000, tracking)
     #Thrust rules
     if ai.selfSpeed() <= 5 and frontWall >= 500:
