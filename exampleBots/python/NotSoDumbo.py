@@ -19,7 +19,7 @@ def AI_loop():
     #Thrust rules
     if ai.selfSpeed() <= 5 and frontWall >= 500:
         ai.thrust(1)
-    elif backWall < 350 and ai.wallFeeler(500, heading) == 500:
+    elif backWall < 250 and ai.wallFeeler(500, heading) == 500:
         ai.thrust(1)
     
     #Turn rules
