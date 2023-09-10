@@ -1,53 +1,44 @@
 import libpyAI as ai
 import math
 
-def angleDiff(m, n):
-    """ Measures the difference between two arbitrary angles.
-        m, n are the two angles, measured in degrees.
-        Returns their difference, in degrees.
-    """
-    return int(180-abs(abs(m-n)-180))
+#finds difference between two angles
+def angleDiff(m, n):    
+    return int(180 - abs(abs(m - n) - 180))
 
+#Measures the difference between two headings
+#returns difference in degrees
 def headingDiff(m, n):
-    """ Measures the difference between two headings.
+    return ((m-n) + 180) % 360 - 180
 
-        m, n are the two headings, measured in degrees.
-        Returns their difference, in degrees.
-    """
-    return ((m-n)+180)%360 - 180
-
+#Compute the angle between two cartesian points, relative to horizontal
 def angleToPointDeg(p1, p2):
-    """ Compute the angle between two Cartesian points, relative to horizontal.
-        p1, p2 are the two points, given as duples.
-    """
-    dx = p1[0]-p2[0]
-    dy = p2[1]-p1[1]
-    m = -1*(int(math.degrees(math.atan2(dy, dx)))+180)%360
+    dx = p1[0] - p2[0]
+    dy = p2[1] - p1[1]
+    m = -1 * (int(math.degrees(math.atan2(dy, dx))) + 180) % 360
     return headingDiff(m, ai.selfHeadingDeg())
 
-# The main loop for this agent!
-# - a rule-based expert system.
+# main loop for this agent --- a rule-based expert system
 def AI_loop():
 
-    # Release keys
+    # release keys
     ai.thrust(0)
     ai.turnLeft(0)
     ai.turnRight(0)
 
-    nearLimit = 150 # Threshold for a relatively "close" object (xp distance units)
-    nearLimitThreat = 300 # Threshold for a "very close" object (xp distance units)
-    shotDanger = 130 # Threshold for relatively "close" bullets (xp distance units)
+    nearLimit = 150 # threshold for a relatively "close" object (xp distance units)
+    nearLimitThreat = 300 # threshold for a "very close" object (xp distance units)
+    shotDanger = 130 # threshold for relatively "close" bullets (xp distance units)
 
     speedLimit = 5 # (xp speed units)
     powerHigh = 45 # (xp thrust power units)
     powerLow = 20 # (xp thrust power units)
-    targetingAccuracy = 5 # Tolerance from heading within which firing is OK (degrees)
+    targetingAccuracy = 5 # tolerance from heading within which firing is OK (degrees)
 
-    # Reset everything else
-    ai.setTurnSpeedDeg(20) # Artificial handicap
+    # reset everything else
+    ai.setTurnSpeedDeg(20) # handicap
     ai.setPower(powerLow)
 
-    # Acquire information
+    # acquire information
     heading = int(ai.selfHeadingDeg())
     tracking = int(ai.selfTrackingDeg())
 
@@ -75,7 +66,7 @@ def AI_loop():
     feelers.append(frontLeftWall)
     feelers.append(frontRightWall)
 
-    # Collect distances
+    # collect distances
     if ai.enemyDistanceId(ai.closestShipId()) > 0:
         closestPlayerDistance = ai.enemyDistanceId(ai.closestShipId())
     else:
@@ -86,13 +77,13 @@ def AI_loop():
     else:
         closestBulletDistance = math.inf
 
-    dcw = min(feelers)
+    feeler = min(feelers)
     distToNearestThreat = min(closestPlayerDistance, closestBulletDistance)
 
-    # Assign priority to nearest threat
-    if closestBulletDistance <= dcw and closestBulletDistance <= closestPlayerDistance: # if closest threat is a bullet
+    # assign priority to nearest threat
+    if closestBulletDistance <= feeler and closestBulletDistance <= closestPlayerDistance: # if closest threat is a bullet
         priority = 1
-    elif dcw <= closestPlayerDistance and dcw <= closestBulletDistance: # if closest threat is a wall
+    elif feeler <= closestPlayerDistance and feeler <= closestBulletDistance: # if closest threat is a wall
         priority = 2
     else: # closest threat is a player
         priority = 3
@@ -100,7 +91,7 @@ def AI_loop():
     if distToNearestThreat < nearLimitThreat:
         ai.setPower(powerHigh)
 
-    # If the closest threat is a bullet
+    # if the closest threat is a bullet
     if priority == 1:
         m = angleToPointDeg((ai.selfX(), ai.selfY()), (ai.shotX(0), ai.shotY(0)))
         if m >= 0:
@@ -111,9 +102,9 @@ def AI_loop():
         if ai.shotAlert(0) < shotDanger:
             ai.thrust(1)
 
-    # If the closest threat is a wall
+    # if the closest threat is a wall
     elif priority == 2:
-        # Thrust
+        # thrust
         if ai.selfSpeed() <= speedLimit:
             ai.thrust(1)
         elif trackWall < nearLimit and angleDiff(heading, tracking) > 90:
@@ -121,7 +112,7 @@ def AI_loop():
         elif rearWall < nearLimit and angleDiff(heading, tracking) > 90:
             ai.thrust(1)
 
-        # Turn
+        # turn
         if trackWall < nearLimit and leftWall < rightWall:
             ai.turnRight(1)
         elif trackWall < nearLimit and rightWall < leftWall:
@@ -135,7 +126,7 @@ def AI_loop():
         elif frontLeftWall < nearLimit:
             ai.turnRight(1)
     
-    # If the closest threat is a player
+    # if the closest threat is a player
     elif priority == 3:
         m = angleToPointDeg((ai.selfX(), ai.selfY()), (ai.shotX(0), ai.shotY(0)))
         if m <= 0:
@@ -143,8 +134,13 @@ def AI_loop():
         else:
             ai.turnLeft(1)
 
-        if ai.selfHeadingDeg() <= (targetingAccuracy + angleToPointDeg((ai.selfX(), ai.selfY()), (ai.screenEnemyX(0), ai.screenEnemyY(0)))) and ai.selfHeadingDeg() >= (targetingAccuracy - angleToPointDeg((ai.selfX(), ai.selfY()), (ai.screenEnemyX(0), ai.screenEnemyY(0)))):
-            ai.fireShot()
+        ai.fireShot()
+
+        #if ai.selfHeadingDeg() <= (targetingAccuracy + angleToPointDeg((ai.selfX(), 
+        #                           ai.selfY()), (ai.screenEnemyX(0), 
+        #                           ai.screenEnemyY(0)))) and ai.selfHeadingDeg() >= (targetingAccuracy - angleToPointDeg((ai.selfX(), 
+        #                           ai.selfY()), (ai.screenEnemyX(0), ai.screenEnemyY(0)))):
+        #    ai.fireShot()
 
 
 ai.start(AI_loop,["-name","Russ"])
