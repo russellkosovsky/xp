@@ -36,20 +36,6 @@ def AI_loop():
   enemyDist = ai.selfLockDist()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   ##### Production System Rules ######
   ### Turning Rules ###  
   if frontWall <= frontAlertValue and (left45Wall < right45Wall) and ai.selfSpeed() > speedAlertValue: 
