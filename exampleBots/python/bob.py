@@ -7,20 +7,21 @@ def AI_loop():
     ai.thrust(0)
     ai.turnLeft(0)
     ai.turnRight(0)
-
-    nearDanger = 170 # distance for close object (distance units)
-    shotDanger = 130 # distance for close bullets (distance units)
-    speedLimit = 5 
-    alertDistance = 275 # backup distance threshold
-    
+    speedLimit = 5
+    # distance for close object (distance units)
+    nearDanger = 170 
+    # distance for close bullets (distance units)    
+    shotDanger = 130 
+    # backup distance threshold
+    alertDistance = 275     
     # handicap
     ai.setTurnSpeedDeg(20)
+    
     # get information
     heading = int(ai.selfHeadingDeg())
     tracking = int(ai.selfTrackingDeg())
     # store in array so we can easily find the shortest feeler
     feelers = []
-
     frontWall = ai.wallFeeler(500, heading)
     leftWall = ai.wallFeeler(500, heading + 90)
     rightWall = ai.wallFeeler(500, heading - 90)
@@ -30,7 +31,6 @@ def AI_loop():
     backRightWall = ai.wallFeeler(500, heading - 135)
     frontLeftWall = ai.wallFeeler(500, heading + 45)
     frontRightWall = ai.wallFeeler(500, heading - 45)
-    
     feelers.append(frontWall)
     feelers.append(leftWall)
     feelers.append(rightWall)
@@ -41,7 +41,7 @@ def AI_loop():
     feelers.append(frontLeftWall)
     feelers.append(frontRightWall)
 
-    # collect distances
+    # get distances
     if ai.enemyDistanceId(ai.closestShipId()) > 0:
         closestPlayerDistance = ai.enemyDistanceId(ai.closestShipId())
     else:
@@ -121,11 +121,11 @@ def AI_loop():
     # the closest threat is a player
     elif priority == 3:
         p1, p2 = (ai.selfX(), ai.selfY()), (ai.screenEnemyX(0), ai.screenEnemyY(0))
-        #Compute the angle between self and nearest enemy, relative to horizontal
+        # get the angle between self and nearest enemy, relative to horizontal
         dx = p1[0] - p2[0]
         dy = p2[1] - p1[1]
         m = -1 * (int(math.degrees(math.atan2(dy, dx))) + 180) % 360
-        #Measures the difference between m2 and selfs heading
+        # get the difference between m2 and selfs heading
         m = ((m - ai.selfHeadingDeg()) + 180) % 360 - 180
 
         if m <= 0:
