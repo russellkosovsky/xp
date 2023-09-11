@@ -58,7 +58,6 @@ def AI_loop():
     # nearest object (player or bullet)
     distToNearestThreat = min(closestPlayerDistance, closestBulletDistance)
 
-    
     # resets power based on how close the nearest threat is
     if feeler <= 100:
         ai.setPower(30)
