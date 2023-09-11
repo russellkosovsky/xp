@@ -1,4 +1,6 @@
 
+# RUSSELL KOSOVSKY, BROOKE, AND JAY
+
 import libpyAI as ai
 import math
 
