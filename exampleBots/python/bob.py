@@ -130,8 +130,10 @@ def AI_loop():
 
         if m <= 0:
             ai.turnRight(1)
+            ai.fireShot()
         else:
             ai.turnLeft(1)
+            ai.fireShot()
         if ai.selfHeadingDeg() <= (5 + m) and ai.selfHeadingDeg() >= (5 - m):
             ai.fireShot()
 
