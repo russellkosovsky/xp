@@ -16,6 +16,7 @@ def AI_loop():
     alertDistance = 275     
     # handicap
     ai.setTurnSpeedDeg(20)
+    ai.setPower(20)
     
     # get information
     heading = int(ai.selfHeadingDeg())
@@ -57,6 +58,17 @@ def AI_loop():
     # nearest object (player or bullet)
     distToNearestThreat = min(closestPlayerDistance, closestBulletDistance)
 
+    
+    # resets power based on how close the nearest threat is
+    if feeler <= 100:
+        ai.setPower(30)
+    elif distToNearestThreat <= 100:
+        ai.setPower(30)
+    elif feeler <= 50:
+        ai.setPower(45)
+    elif distToNearestThreat <= 50:
+        ai.setPower(45)
+    
     # assign priority to nearest threat
     # if closest threat is a bullet
     if closestBulletDistance <= feeler and closestBulletDistance <= closestPlayerDistance: 
@@ -109,9 +121,9 @@ def AI_loop():
             ai.turnLeft(1)
         elif frontLeftWall < nearDanger:
             ai.turnRight(1)
-        elif frontWall <= alertDistance and (frontLeftWall < frontRightWall): 
+        elif frontWall <= alertDistance and (frontLeftWall < frontRightWall) and ai.selfSpeed() > 1: 
             ai.turnRight(1)
-        elif frontWall <= alertDistance and (frontLeftWall > frontRightWall):
+        elif frontWall <= alertDistance and (frontLeftWall > frontRightWall) and ai.selfSpeed() > 1:
             ai.turnLeft(1)
         elif leftWall <= alertDistance and ai.selfSpeed() > 1:
             ai.turnRight(1) 
