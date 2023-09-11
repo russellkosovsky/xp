@@ -1,15 +1,14 @@
 import libpyAI as ai
 import math
 
+#finds difference between two angles
+def angleDifference(a, b):    
+    return int(180 - abs(abs(a - b) - 180))
 
 
-frontAlertValue = 275
-backAlertValue = 225
+speedLimit = 5 # (xp speed units)
+nearLimit = 150 # threshold for a relatively "close" object (xp distance units)
 speedAlertValue = 1
-EnemyAlertValue = 1300
-TrackSlowAlertValue = 125
-TrackFastAlertValue = 125
-BulletAlertValue = 45
 
 def AI_loop():
  
@@ -55,38 +54,31 @@ def AI_loop():
 
     shortest_feeler = min(feelers)
     dist_Nearest_Threat = min(closestPlayerDistance, closestBulletDistance)
+    
 
     ##### Production System Rules ######
-    ### Turning Rules ###  
-    if frontWall <= frontAlertValue and (left45Wall < right45Wall) and ai.selfSpeed() > speedAlertValue: 
+    ## turn
+    if trackWall < nearLimit and leftWall < rightWall:
         ai.turnRight(1)
-    elif frontWall <= frontAlertValue and (left45Wall > right45Wall) and ai.selfSpeed() > speedAlertValue:
+    elif trackWall < nearLimit and rightWall < leftWall:
         ai.turnLeft(1)
-    elif left90Wall <= frontAlertValue and ai.selfSpeed() > speedAlertValue:
-        ai.turnRight(1) 
-    elif right90Wall <= frontAlertValue and ai.selfSpeed() > speedAlertValue:
+    elif backLeftWall < nearLimit and rightWall > 50:
+        ai.turnRight(1)
+    elif backRightWall < nearLimit and leftWall > 50:
         ai.turnLeft(1)
-    ### Thrust commands ####
-    elif ai.selfSpeed() <= speedAlertValue and (frontWall >= frontAlertValue) and (left45Wall >= frontAlertValue) and (right45Wall >= frontAlertValue) and (right90Wall >= frontAlertValue) and (left90Wall >= frontAlertValue) and (left135Wall >= backAlertValue) and (right135Wall >= backAlertValue) and (backWall >= backAlertValue):
+    elif frontRightWall < nearLimit:
+        ai.turnLeft(1)
+    elif frontLeftWall < nearLimit:
+        ai.turnRight(1)
+    ## thrust
+    elif ai.selfSpeed() <= speedLimit:
         ai.thrust(1)
-    elif trackWall <= TrackFastAlertValue and ai.selfSpeed() >= speedAlertValue:
+    elif trackWall < nearLimit and angleDifference(heading, tracking) > 90:
         ai.thrust(1)
-    elif trackWall <= TrackSlowAlertValue and ai.selfSpeed() <= speedAlertValue:
+    elif rearWall < nearLimit and angleDifference(heading, tracking) > 90:
         ai.thrust(1)
-    elif backWall <= TrackFastAlertValue and ai.selfSpeed() >= speedAlertValue:
-        ai.thrust(1)
-    elif backWall <= TrackSlowAlertValue and ai.selfSpeed() <= speedAlertValue:
-        ai.thrust(1)  
-    elif left135Wall <= TrackFastAlertValue and ai.selfSpeed() >= speedAlertValue:
-        ai.thrust(1)
-    elif left135Wall <= TrackSlowAlertValue and ai.selfSpeed() <= speedAlertValue:
-        ai.thrust(1)
-    elif right135Wall <= TrackFastAlertValue and ai.selfSpeed() >= speedAlertValue:
-        ai.thrust(1)
-    elif right135Wall <= TrackSlowAlertValue and ai.selfSpeed() <= speedAlertValue:
-        ai.thrust(1)
-    ##### Bullet Avoidance Commands #####
-    elif ai.shotAlert(0) >= 0 and ai.shotAlert(0) <= BulletAlertValue:
+    ## bullet Avoidance Commands
+    elif ai.shotAlert(0) >= 0 and ai.shotAlert(0) <= 45:
         if ai.angleDiff(heading, ai.shotVelDir(0)) > 0 and ai.selfSpeed() <= speedAlertValue:
             ai.turnLeft(1)
             ai.thrust(1)
@@ -97,16 +89,16 @@ def AI_loop():
             ai.turnLeft(1)
         else:
             ai.turnRight(1)
-    ##### Shooting Ennemy Commands #####
-    elif enemyDist <= EnemyAlertValue and heading > (head) and ai.selfSpeed() > speedAlertValue:
+    ## shooting Ennemy Commands
+    elif enemyDist <= 1300 and heading > (head) and ai.selfSpeed() > speedAlertValue:
         ai.turnRight(1)
         ai.fireShot()
-    elif enemyDist <= EnemyAlertValue and heading < (head) and ai.selfSpeed() > speedAlertValue:
+    elif enemyDist <= 1300 and heading < (head) and ai.selfSpeed() > speedAlertValue:
         ai.turnLeft(1)
         ai.fireShot()
     elif ai.selfSpeed() < speedAlertValue:
         ai.thrust(1)
     else:
-        ai.thrust(0)
+        ai.thrust(1)
 
 ai.start(AI_loop,["-name","Russell"])
