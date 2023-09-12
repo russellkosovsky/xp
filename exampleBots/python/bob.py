@@ -81,25 +81,10 @@ def AI_loop():
     else: 
         priority = 3
 
-    # the closest threat is a bullet
-    if priority == 1:        
-        p1, p2 = (ai.selfX(), ai.selfY()), (ai.shotX(0), ai.shotY(0))
-        # get the angle between self and nearest shot, relative to horizontal
-        dx = p1[0] - p2[0]
-        dy = p2[1] - p1[1]
-        m = -1 * (int(math.degrees(math.atan2(dy, dx))) + 180) % 360
-        # measure the difference between 'm' and selfs heading
-        m = ((m - ai.selfHeadingDeg()) + 180) % 360 - 180
-
-        if m >= 0:
-            ai.turnRight(1)
-        else:
-            ai.turnLeft(1)
-        if ai.shotAlert(0) < shotDanger:
-            ai.thrust(1)       
+       
 
     # the closest threat is a wall
-    elif priority == 2:
+    if priority == 2:
         #finds difference the heading and the tracking
         head_track_diff = int(180 - abs(abs(heading - tracking) - 180))
         # thrusting
@@ -131,6 +116,23 @@ def AI_loop():
         elif rightWall <= alertDistance and ai.selfSpeed() > 1:
             ai.turnLeft(1)
  
+    # the closest threat is a bullet
+    elif priority == 1:        
+        p1, p2 = (ai.selfX(), ai.selfY()), (ai.shotX(0), ai.shotY(0))
+        # get the angle between self and nearest shot, relative to horizontal
+        dx = p1[0] - p2[0]
+        dy = p2[1] - p1[1]
+        m = -1 * (int(math.degrees(math.atan2(dy, dx))) + 180) % 360
+        # measure the difference between 'm' and selfs heading
+        m = ((m - ai.selfHeadingDeg()) + 180) % 360 - 180
+
+        if m >= 0:
+            ai.turnRight(1)
+        else:
+            ai.turnLeft(1)
+        if ai.shotAlert(0) < shotDanger:
+            ai.thrust(1)
+
     # the closest threat is a player
     elif priority == 3:
         p1, p2 = (ai.selfX(), ai.selfY()), (ai.screenEnemyX(0), ai.screenEnemyY(0))
