@@ -1,5 +1,5 @@
 
-# RUSSELL KOSOVSKY, BROOKE, AND JAY
+# RUSSELL KOSOVSKY
 
 import libpyAI as ai
 import math
