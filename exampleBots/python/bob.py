@@ -81,8 +81,6 @@ def AI_loop():
     else: 
         priority = 3
 
-       
-
     # the closest threat is a wall
     if priority == 2:
         #finds difference the heading and the tracking
@@ -151,6 +149,5 @@ def AI_loop():
             ai.fireShot()
         if ai.selfHeadingDeg() <= (5 + m) and ai.selfHeadingDeg() >= (5 - m):
             ai.fireShot()
-
 
 ai.start(AI_loop,["-name","bob"])
