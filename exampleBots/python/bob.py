@@ -26,6 +26,7 @@ def AI_loop():
     # store in array so we can easily find the shortest feeler
     feelers = []
     frontWall = ai.wallFeeler(500, heading)
+            current_depth += 1;
     leftWall = ai.wallFeeler(500, heading + 90)
     rightWall = ai.wallFeeler(500, heading - 90)
     trackWall = ai.wallFeeler(500, tracking)
@@ -150,4 +151,4 @@ def AI_loop():
         if ai.selfHeadingDeg() <= (5 + m) and ai.selfHeadingDeg() >= (5 - m):
             ai.fireShot()
 
-ai.start(AI_loop,["-name","bob"])
+ai.start(AI_loop,["-name","bob","-join","localhost"])
