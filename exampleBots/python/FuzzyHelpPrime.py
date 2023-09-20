@@ -95,7 +95,6 @@ def AI_loop():
     
     # Behavior aggregation
     behavior = {"shoot" : 0.0, "avoidWall" : 0.0, "align" : 0.0}
-  
     if wallDanger["close"] > wallDanger["near"] and wallDanger["close"] > wallDanger["far"]:
         behavior["avoidWall"] += wallDanger["close"]
     if enemyDist["far"] > enemyDist["near"]:
