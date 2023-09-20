@@ -84,14 +84,14 @@ def AI_loop():
     dist1 = min(1,max(0,2 - (rawDist / 400)))
     dist2 = min(1,max(0,(rawDist - 400)))
     enemyDist = {"near" : dist1, "far" : dist2}
-    if ai.wallBetween(ai.selfX(),ai.selfY(),ai.screenEnemyX(0),ai.screenEnemyY(0)) != -1:
+    if ai.wallBetween(ai.selfX(), ai.selfY(), ai.screenEnemyX(0), ai.screenEnemyY(0)) != -1:
         enemyDist["near"] = 0
     
     # Wall danger aggregation
-    wallDanger1 = max(wallProxFront["close"],wallProxLeft["close"],wallProxRight["close"],wallProxBack["close"])
-    wallDanger2 = min(wallProxFront["near"],wallProxLeft["near"],wallProxRight["near"],wallProxBack["near"])
-    wallDanger3 = min(wallProxFront["far"],wallProxLeft["far"],wallProxRight["far"],wallProxBack["far"])
-    wallDanger = {"close" : wallDanger1, "near":wallDanger2,"far":wallDanger3}
+    wallDanger1 = max(wallProxFront["close"], wallProxLeft["close"], wallProxRight["close"], wallProxBack["close"])
+    wallDanger2 = min(wallProxFront["near"], wallProxLeft["near"], wallProxRight["near"], wallProxBack["near"])
+    wallDanger3 = min(wallProxFront["far"], wallProxLeft["far"], wallProxRight["far"], wallProxBack["far"])
+    wallDanger = {"close" : wallDanger1, "near" : wallDanger2, "far" : wallDanger3}
     
     # Behavior aggregation
     behavior = {"shoot" : 0.0, "avoidWall" : 0.0, "align" : 0.0}
