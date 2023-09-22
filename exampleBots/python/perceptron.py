@@ -5,6 +5,7 @@ import random
 class Perceptron:
 
     def __init__(self, num_inputs):
+        
         self.weights = []
         # append weights as random values between -1 and 1.
         # num_inputs + 1 because of the weight for bias.
@@ -12,25 +13,27 @@ class Perceptron:
            self.weights.append(random.uniform(-1, 1))
         
     def set_weights(self, new_weights):
+        
         # set the weights of the perceptron manually.
         self.weights = new_weights[:]
 
     def predict(self, inputs):
+        
         # add a constant -1 input for the bias(threshold) weight.
         # acts like an offset and allows the perceptron to fit data better.
         inputs.append(-1)
         
-        # compute the weighted sum of the inputs.
         # this is the dot product between the weights and the inputs.
         weighted_sum = 0
         for i in range(len(self.weights)):
             weighted_sum += self.weights[i] * inputs[i]
         
         # the activation function determines the output. 
-        # if the weighted sum is positive, output 1, otherwise, output 0.
         return self.activation(weighted_sum)
 
     def activation(self, x):
+        
+        # if the weighted sum is positive, output 1, otherwise, output 0.
         if x > 0:
             return 1
         else:
@@ -79,10 +82,10 @@ if __name__ == "__main__":
         else:
             desired_outputs.append(0)
 
-    perceptron = Perceptron(num_inputs = 5)
     manual_weights = [0.1, 0.3, 0.4, 0.3, 0.3, 1.0]
-    perceptron.set_weights(manual_weights)
 
+    perceptron = Perceptron(num_inputs = 5)
+    perceptron.set_weights(manual_weights)
     print("Testing with manually set weights...")
     for i in range(len(training_inputs)):
         inputs = training_inputs[i][:]
