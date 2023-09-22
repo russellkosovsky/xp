@@ -62,7 +62,6 @@ class Perceptron:
                 
                 # adjust each weight in the direction to reduce the error using the perceptron rule.
                 for j in range(len(self.weights)):
-                    
                     self.weights[j] += learning_rate * error * inputs[j]
 
 
@@ -94,10 +93,10 @@ if __name__ == "__main__":
 
     trained_perceptron = Perceptron(num_inputs = 5)
     trained_perceptron.train(training_inputs, desired_outputs, rounds = 1000)
-    print("Testing with trained weights...")
+    print("\nTesting with trained weights...")
     for i in range(len(training_inputs)):
         inputs = training_inputs[i][:]
         desired_output = desired_outputs[i]
         print("Input:", inputs, "-> Predicted Output:", trained_perceptron.predict(inputs), ", Desired Output:", desired_output)
     
-    print("Final weights:", trained_perceptron.weights)
+    print("\nFinal weights:", trained_perceptron.weights, "\n")
