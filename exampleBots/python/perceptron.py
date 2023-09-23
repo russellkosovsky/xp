@@ -19,8 +19,7 @@ class Perceptron:
 
     def predict(self, inputs):
         
-        # add a constant -1 input for the bias(threshold) weight.
-        # acts like an offset and allows the perceptron to fit data better.
+        # constant -1 input for the threshold weight.
         inputs.append(-1)
         
         # this is the dot product between the weights and the inputs.
