@@ -8,7 +8,7 @@ class Perceptron:
         
         self.weights = []
         # append weights as random values between -1 and 1.
-        # num_inputs + 1 because of the weight for bias.
+        # num_inputs + 1 because of the weight for bias (threshold).
         for _ in range(num_inputs + 1):
            self.weights.append(random.uniform(-1, 1))
         
@@ -78,6 +78,7 @@ if __name__ == "__main__":
     for inp in training_inputs:
         if inp in [[0,1,1,1,1], [1,0,1,1,1], [1,1,0,1,1], [1,1,1,0,1], [1,1,1,1,0], [1,1,1,1,1]]:
             desired_outputs.append(1)
+                    
         else:
             desired_outputs.append(0)
 
