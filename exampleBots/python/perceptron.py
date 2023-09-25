@@ -3,9 +3,8 @@
 import random
 
 class Perceptron:
-
+    
     def __init__(self, num_inputs):
-        
         self.weights = []
         # append weights as random values between -1 and 1.
         # num_inputs + 1 because of the weight for bias (threshold).
@@ -13,25 +12,20 @@ class Perceptron:
            self.weights.append(random.uniform(-1, 1))
         
     def set_weights(self, new_weights):
-        
         # set the weights of the perceptron manually.
         self.weights = new_weights[:]
 
     def predict(self, inputs):
-        
         # constant -1 input for the threshold weight.
         inputs.append(-1)
-        
         # this is the dot product between the weights and the inputs.
         weighted_sum = 0
         for i in range(len(self.weights)):
             weighted_sum += self.weights[i] * inputs[i]
-        
         # the activation function determines the output. 
         return self.activation(weighted_sum)
 
     def activation(self, x):
-        
         # if the weighted sum is positive, output 1, otherwise, output 0.
         if x > 0:
             return 1
@@ -39,26 +33,18 @@ class Perceptron:
             return 0
 
     def train(self, training_inputs, outcome, learning_rate = 0.1, rounds = 1000):
-        
         for round in range(rounds):
-            
             for i in range(len(training_inputs)):
-                
                 # copy the input to avoid altering the original list.
                 inputs = training_inputs[i][:]
-                
                 # extract the corresponding outcomes for the input.
                 expected_outcome = outcome[i]
-                
                 # make a prediction using the current weights.
                 prediction = self.predict(inputs)
-                
                 # compute the error: difference between label and prediction.
                 error = expected_outcome - prediction
-                
                 # add bias input for the weight update.
                 inputs.append(-1)
-                
                 # adjust each weight in the direction to reduce the error using the perceptron rule.
                 for j in range(len(self.weights)):
                     self.weights[j] += learning_rate * error * inputs[j]
