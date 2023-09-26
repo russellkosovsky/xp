@@ -1,13 +1,11 @@
 import numpy as np
 
-# Activation function: Sigmoid
 def sigmoid(x):
-    """Compute sigmoid activation."""
+    # Compute sigmoid activation
     return 1 / (1 + np.exp(-x))
 
-# Derivative of the sigmoid function for backpropagation
 def sigmoid_derivative(x):
-    """Compute derivative of sigmoid activation."""
+    # Compute derivative of sigmoid activation for backprop
     return x * (1 - x)
 
 class NeuralNetwork:
