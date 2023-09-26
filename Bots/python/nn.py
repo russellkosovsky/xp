@@ -12,14 +12,10 @@ def sigmoid_derivative(x):
 
 class NeuralNetwork:
     def __init__(self, input_size, hidden1_size, hidden2_size, output_size):
-        """Initialize the Neural Network architecture.
-        
-        Args:
-        - input_size (int): Number of neurons in the input layer.
-        - hidden1_size (int): Number of neurons in the first hidden layer.
-        - hidden2_size (int): Number of neurons in the second hidden layer.
-        - output_size (int): Number of neurons in the output layer.
-        """
+        # - input_size (int): Number of neurons in the input layer.
+        # - hidden1_size (int): Number of neurons in the first hidden layer.
+        # - hidden2_size (int): Number of neurons in the second hidden layer.
+        # - output_size (int): Number of neurons in the output layer.
         
         # Weights and biases for input to first hidden layer
         self.weights_input_hidden1 = np.random.uniform(-1, 1, (input_size, hidden1_size))
@@ -34,14 +30,8 @@ class NeuralNetwork:
         self.bias_output = np.random.uniform(-1, 1, (output_size,))
 
     def forward(self, X):
-        """Forward propagation through the neural network.
-        
-        Args:
-        - X (nparray): Input data.
-        
-        Returns:
-        - nparray: Output after forward propagation.
-        """
+        # - X (nparray): Input data.
+        # Returns: nparray: Output after forward propagation.
         
         # Input to first hidden layer
         self.input = X
@@ -56,13 +46,9 @@ class NeuralNetwork:
         return self.output
 
     def backward(self, X, y, learning_rate = 0.1):
-        """Backward propagation to update weights and biases.
-        
-        Args:
-        - X (nparray): Input data.
-        - y (nparray): True labels.
-        - learning_rate (float): Learning rate for weight updates.
-        """
+        # - X (nparray): Input data.
+        # - y (nparray): True labels.
+        # - learning_rate (float): Learning rate for weight updates.
         
         # Compute the difference between predicted and true labels
         output_error = y - self.output
@@ -90,14 +76,10 @@ class NeuralNetwork:
         self.bias_hidden1 += np.sum(d_hidden1, axis=0) * learning_rate
 
     def train(self, X, y, epochs = 1000, learning_rate = 0.1):
-        """Train the neural network using forward and backward propagation.
-        
-        Args:
-        - X (nparray): Input data.
-        - y (nparray): True labels.
-        - epochs (int): Number of training iterations.
-        - learning_rate (float): Learning rate for weight updates.
-        """
+        # - X (nparray): Input data.
+        # - y (nparray): True labels.
+        # - epochs (int): Number of training iterations.
+        # - learning_rate (float): Learning rate for weight updates.
         for _ in range(epochs):
             self.forward(X)
             self.backward(X, y, learning_rate)
