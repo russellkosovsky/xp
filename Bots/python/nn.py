@@ -33,13 +33,13 @@ class NeuralNetwork:
         
         # Input to first hidden layer
         self.input = X
-        self.hidden1_output = sigmoid(np.dot(self.input, self.weights_input_hidden1) + self.bias_hidden1)
+        self.hidden1_output = sigmoid(np.dot(self.input, self.weights_input_hidden1) - self.bias_hidden1)
         
         # First hidden layer to second hidden layer
-        self.hidden2_output = sigmoid(np.dot(self.hidden1_output, self.weights_hidden1_hidden2) + self.bias_hidden2)
+        self.hidden2_output = sigmoid(np.dot(self.hidden1_output, self.weights_hidden1_hidden2) - self.bias_hidden2)
         
         # Second hidden layer to output
-        self.output = sigmoid(np.dot(self.hidden2_output, self.weights_hidden2_output) + self.bias_output)
+        self.output = sigmoid(np.dot(self.hidden2_output, self.weights_hidden2_output) - self.bias_output)
         
         return self.output
 
@@ -63,15 +63,15 @@ class NeuralNetwork:
 
         # Weight and bias updates for second hidden layer to output
         self.weights_hidden2_output += self.hidden2_output.T.dot(d_output) * learning_rate
-        self.bias_output += np.sum(d_output, axis=0) * learning_rate
+        self.bias_output += np.sum(d_output, axis=0) * learning_rate * (-1)
         
         # Weight and bias updates for first hidden layer to second hidden layer
         self.weights_hidden1_hidden2 += self.hidden1_output.T.dot(d_hidden2) * learning_rate
-        self.bias_hidden2 += np.sum(d_hidden2, axis=0) * learning_rate
+        self.bias_hidden2 += np.sum(d_hidden2, axis=0) * learning_rate * (-1)
         
         # Weight and bias updates for input to first hidden layer
         self.weights_input_hidden1 += X.T.dot(d_hidden1) * learning_rate
-        self.bias_hidden1 += np.sum(d_hidden1, axis=0) * learning_rate
+        self.bias_hidden1 += np.sum(d_hidden1, axis=0) * learning_rate * (-1)
 
     def train(self, X, y, epochs = 1000, learning_rate = 0.1):
         # - X (nparray): Input data.
