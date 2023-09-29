@@ -43,7 +43,7 @@ class NeuralNetwork:
         
         return self.output
 
-    def backward(self, X, y, learning_rate = 0.1):
+    def backprop(self, X, y, learning_rate = 0.1):
         # - X (nparray): Input data.
         # - y (nparray): True labels.
         # - learning_rate (float): Learning rate for weight updates.
@@ -80,18 +80,18 @@ class NeuralNetwork:
         # - learning_rate (float): Learning rate for weight updates.
         for _ in range(epochs):
             self.forward(X)
-            self.backward(X, y, learning_rate)
+            self.backprop(X, y, learning_rate)
 
 
 if __name__ == "__main__":
     # Generate all 32 possible inputs for a 5-input binary perceptron.
     training_inputs = np.array([list(map(int, format(i, '05b'))) for i in range(32)])
     
-    # Generate desired outputs based on the specified input patterns.
-    desired_patterns = [
-        [0,1,1,1,1], [1,0,1,1,1], [1,1,0,1,1], [1,1,1,0,1], [1,1,1,1,0], [1,1,1,1,1],
-        [0,0,0,0,0], [1,0,0,0,0], [0,1,0,0,0], [0,0,1,0,0], [0,0,0,1,0], [0,0,0,0,1]
-    ]
+    # Generate desired outputs based on the specified input patterns (should have 1 as output).
+    desired_patterns = [[0,1,1,1,1], [1,0,1,1,1], [1,1,0,1,1], [1,1,1,0,1], [1,1,1,1,0], [1,1,1,1,1],
+                        [0,0,0,0,0], [1,0,0,0,0], [0,1,0,0,0], [0,0,1,0,0], [0,0,0,1,0], [0,0,0,0,1]]
+
+    # list of expected outcomes that matches indexes of the training inputs.
     desired_outputs = np.array([1 if inp.tolist() in desired_patterns else 0 for inp in training_inputs]).reshape(-1, 1)
 
     # Create and train the neural network
@@ -99,8 +99,14 @@ if __name__ == "__main__":
     nn.train(training_inputs, desired_outputs, epochs=10000)
     
     # Test and print the results
-    print("Testing with trained weights...")
+    num_correct = 0
+    print("Testing with trained weights...\n")
     for i in range(len(training_inputs)):
         predicted_output = nn.forward(training_inputs[i])
         print("Input:", training_inputs[i], "-> Predicted Output:", round(predicted_output[0]), ", Desired Output:", desired_outputs[i][0])
+        if round(predicted_output[0]) == desired_outputs[i][0]:
+            num_correct += 1
+
+    print("\npredited the correct output", num_correct, " out of 32 times")
+
 
